@@ -29,12 +29,26 @@ export class BucketService {
     return (await bucketsPS).map((bucket) => new BucketDto(bucket));
   }
 
-  public modifyBucketState(
-    updateBucketStateDto: UpdateBucketStateDto,
-  ): Promise<any> {
-    return this.bucketRepository.update(
-      updateBucketStateDto.id,
-      updateBucketStateDto,
-    );
+  public async modifyBucketState(updateBucketStateDto: UpdateBucketStateDto) {
+    const bucketPS = await this.bucketRepository.findOne({
+      where: {
+        id: updateBucketStateDto.id,
+      },
+    });
+
+    bucketPS.isComplete = updateBucketStateDto.isComplete;
+
+    //* TODO controller 단에서 dto에 대한 형변환 방법 공부
+    if (String(bucketPS.isComplete) === 'true') {
+      bucketPS.isComplete = true;
+    }
+    if (String(bucketPS.isComplete) === 'false') {
+      bucketPS.isComplete = false;
+    }
+    return await this.bucketRepository.update(bucketPS.id, bucketPS);
+  }
+
+  public async removeBucket(id: number) {
+    return await this.bucketRepository.delete(id);
   }
 }

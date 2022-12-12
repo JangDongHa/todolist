@@ -8,6 +8,7 @@ export class UpdateBucketStateDto {
   @IsBoolean()
   public isComplete: boolean;
 
+  //*TODO service에서 해당 메서드 사용 불가 이유 알기
   public toBucketDto(): Bucket {
     const bucket = new Bucket();
     bucket.id = this.id;

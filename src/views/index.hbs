@@ -63,14 +63,13 @@
       $("#bucket-list").append(html); } } }, }); } function save_bucket() {
       bucket = $("#bucket").val(); $.ajax({ type: "POST", url: "/bucket", data:
       { bucket: bucket, }, success: function (response) {
-      window.location.reload(); alert(response["msg"]); }, error: function
+      window.location.reload(); alert("등록 완료"); }, error: function
       (response) { alert("입력한 글의 길이가 너무 길거나 짧습니다.");
       window.location.reload(); }, }); } function patch_bucket(num, done) {
       $.ajax({ type: "PATCH", url: "/bucket", data: { id: num, isComplete:
-      !done, }, success: function (response) { console.log(response); }, }); }
-      function delete_bucket(num) { $.ajax({ type: "DELETE", url: "/bucket",
-      data: { num: num, }, success: function (response) {
-      window.location.reload(); alert(response["msg"]); }, }); }
+      !done, }, success: function (response) { window.location.reload(); }, });
+      } function delete_bucket(num) { $.ajax({ type: "DELETE", url: "/bucket/" +
+      num, success: function (response) { window.location.reload(); }, }); }
     </script>
   </head>
   <body>

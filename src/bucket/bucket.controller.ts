@@ -6,7 +6,6 @@ import {
   Get,
   Post,
   Delete,
-  Put,
   Patch,
 } from '@nestjs/common/decorators/http/request-mapping.decorator';
 import { Body, Param, HttpException, UseInterceptors } from '@nestjs/common';
@@ -25,15 +24,13 @@ export class BucketController {
     return this.bucketService.addBucket(Body);
   }
 
-  @Delete()
-  public deleteBucket() {
-    return 'delete bucket';
+  @Delete('/:id')
+  public deleteBucket(@Param('id') id) {
+    return this.bucketService.removeBucket(id);
   }
 
   @Patch()
   public updateBucket(@Body() data: UpdateBucketStateDto) {
-    console.log('test');
-    console.log(data);
     return this.bucketService.modifyBucketState(data);
   }
 }
