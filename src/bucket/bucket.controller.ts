@@ -21,6 +21,7 @@ export class BucketController {
   @Post()
   public createBucket(@Body('bucket', MaxLenStringPipe) Body) {
     console.log(Body);
+    this.bucketService.test();
     return 'ok2';
   }
 
