@@ -63,8 +63,8 @@
       bucket = $("#bucket").val(); $.ajax({ type: "POST", url: "/bucket", data:
       { bucket: bucket, }, success: function (response) {
       window.location.reload(); alert(response["msg"]); }, error: function
-      (response) { console.log(response.responseText);
-      alert(response["message"]); }, }); } function done_bucket(num) { $.ajax({
+      (response) { alert("입력한 글의 길이가 너무 길거나 짧습니다.");
+      window.location.reload(); }, }); } function done_bucket(num) { $.ajax({
       type: "POST", url: "/bucket/done", data: { num: num, }, success: function
       (response) { window.location.reload(); alert(response["msg"]); }, }); }
       function delete_bucket(num) { $.ajax({ type: "DELETE", url: "/bucket",
