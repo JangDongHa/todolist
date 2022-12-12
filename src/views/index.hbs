@@ -45,34 +45,32 @@
     </style>
     <script>
       $(document).ready(function () { show_bucket(); }); function show_bucket()
-      { $.ajax({ type: "GET", url: "/", data: {}, success: function (response) {
-      const res = response["buckets"]; for (let i = 0; i < res.length; i++) {
-      const bucket = res[i]["bucket"]; const done = res[i]["done"]; const num =
-      res[i]["num"]; if (done == true) { // 완료가 되어있는 경우 const html =
-      `<li> <h2 class="done">✅ ${bucket}</h2> <button type="button" class="btn
-      btn-outline-primary" onclick="cancel_bucket(${num})" style="margin-right:
-      20px; background-color: red; color: #FFFFFF;">취소</button> <button
+      { $.ajax({ type: "GET", url: "/bucket", data: {}, success: function
+      (response) { console.log(response); for (let i = 0; i < response.length;
+      i++) { const bucket = response[i]["content"]; const done =
+      response[i]["isComplete"]; const num = response[i]["id"]; if (done ==
+      true) { const html = `<li> <h2 class="done">✅ ${bucket}</h2> <button
+      type="button" class="btn btn-outline-primary"
+      onclick="patch_bucket(${num}, ${done})" style="margin-right: 20px;
+      background-color: red; color: #FFFFFF;">취소</button> <button
       type="button" class="btn btn-outline-primary"
       onclick="delete_bucket(${num})">삭제</button> </li>`;
-      $("#bucket-list").append(html); } else { const html = `<li> <h2>✅
+      $("#bucket-list").append(html); } else { const html = `<li> <h2>⬜
       ${bucket}</h2> <button type="button" class="btn btn-outline-primary"
-      onclick="done_bucket(${num})" style="margin-right: 20px">완료!</button>
-      <button type="button" class="btn btn-outline-primary"
+      onclick="patch_bucket(${num}, ${done})" style="margin-right:
+      20px">완료!</button> <button type="button" class="btn btn-outline-primary"
       onclick="delete_bucket(${num})">삭제</button> </li>`;
       $("#bucket-list").append(html); } } }, }); } function save_bucket() {
       bucket = $("#bucket").val(); $.ajax({ type: "POST", url: "/bucket", data:
       { bucket: bucket, }, success: function (response) {
       window.location.reload(); alert(response["msg"]); }, error: function
       (response) { alert("입력한 글의 길이가 너무 길거나 짧습니다.");
-      window.location.reload(); }, }); } function done_bucket(num) { $.ajax({
-      type: "POST", url: "/bucket/done", data: { num: num, }, success: function
-      (response) { window.location.reload(); alert(response["msg"]); }, }); }
+      window.location.reload(); }, }); } function patch_bucket(num, done) {
+      $.ajax({ type: "PATCH", url: "/bucket", data: { id: num, isComplete:
+      !done, }, success: function (response) { console.log(response); }, }); }
       function delete_bucket(num) { $.ajax({ type: "DELETE", url: "/bucket",
       data: { num: num, }, success: function (response) {
-      window.location.reload(); alert(response["msg"]); }, }); } function
-      cancel_bucket(num) { $.ajax({ type: "POST", url: "/bucket/cancel", data: {
-      num: num, }, success: function (response) { window.location.reload();
-      alert(response["msg"]); }, }); }
+      window.location.reload(); alert(response["msg"]); }, }); }
     </script>
   </head>
   <body>

@@ -1,3 +1,4 @@
+import { UpdateBucketStateDto } from './dto/bucket/updateBucketStateDto';
 import { MaxLenStringPipe } from './../common/pipes/maxlen.string.pipe';
 import { BucketService } from './bucket.service';
 import { Controller } from '@nestjs/common';
@@ -6,6 +7,7 @@ import {
   Post,
   Delete,
   Put,
+  Patch,
 } from '@nestjs/common/decorators/http/request-mapping.decorator';
 import { Body, Param, HttpException, UseInterceptors } from '@nestjs/common';
 
@@ -15,14 +17,12 @@ export class BucketController {
 
   @Get()
   public readBuckets() {
-    return 'ok';
+    return this.bucketService.findAllBuckets();
   }
 
   @Post()
   public createBucket(@Body('bucket', MaxLenStringPipe) Body) {
-    console.log(Body);
-    this.bucketService.test();
-    return 'ok2';
+    return this.bucketService.addBucket(Body);
   }
 
   @Delete()
@@ -30,8 +30,10 @@ export class BucketController {
     return 'delete bucket';
   }
 
-  @Put()
-  public updateBucket() {
-    return 'update bucket';
+  @Patch()
+  public updateBucket(@Body() data: UpdateBucketStateDto) {
+    console.log('test');
+    console.log(data);
+    return this.bucketService.modifyBucketState(data);
   }
 }
